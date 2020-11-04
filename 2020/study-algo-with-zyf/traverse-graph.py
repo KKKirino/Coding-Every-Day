@@ -1,4 +1,4 @@
-from collections import namedtuple
+import collections
 
 '''
 岛屿数量：
@@ -104,3 +104,74 @@ def dfs_for_islands_with_area(blocks, visited, r, c, shared_var):
     dfs_for_islands_with_area(blocks, visited, nr, nc, shared_var)
 
 print('Count islands with area: ', count_islands_with_area(test_case_for_islands))
+
+'''
+进阶问题：使用迭代式 BFS 解决上述问题。
+'''
+
+def count_islands_bfs(blocks: list) -> int:
+  if len(blocks) == 0 or len(blocks[0]) == 0:
+    return 0
+
+  d = [[0, 1], [0, -1], [-1, 0], [1, 0]]
+  rows, cols = len(blocks), len(blocks[0])
+  count = 0
+  blocks = [list(line) for line in blocks]
+  for r in range(rows):
+    for c in range(cols):
+      if blocks[r][c] == '1':
+        queue = [(r, c)]
+        blocks[r][c] == '0'
+
+        while queue:
+          [r, c] = queue.pop(0)
+          for dr, dc in d:
+            nr, nc = r + dr, c + dc
+            if nr >= len(blocks) or nr < 0 or nc >= len(blocks[0]) or nc < 0 \
+              or blocks[nr][nc] == '0': continue
+            queue.append([nr, nc])
+            blocks[nr][nc] = '0'
+
+        count += 1
+  return count
+
+
+def count_islands_area_bfs(blocks: list) -> int:
+  if len(blocks) == 0 or len(blocks[0]) == 0:
+    return 0
+
+  d = [[0, 1], [0, -1], [-1, 0], [1, 0]]
+  rows, cols = len(blocks), len(blocks[0])
+  res = []
+  blocks = [list(line) for line in blocks]
+  for r in range(rows):
+    for c in range(cols):
+      if blocks[r][c] == '1':
+        queue = [[r, c]]
+        count = 0
+
+        while queue:
+          [cr, cc] = queue.pop(0)
+          if blocks[cr][cc] == '0': continue
+          count += 1
+          blocks[cr][cc] = '0'
+          for dr, dc in d:
+            nr, nc = cr + dr, cc + dc
+            if nr >= len(blocks) or nr < 0 or nc >= len(blocks[0]) or nc < 0: continue
+            queue.append([nr, nc])
+
+        res.append(count)
+  return res
+
+test_case_for_islands_bfs = [
+  '1011001',
+  '0100111',
+  '0100011',
+  '0100001',
+]
+
+print('Count islands with my bfs: ', count_islands_bfs(test_case_for_islands_bfs))
+
+print('Count islands area with my bfs: ', count_islands_area_bfs(test_case_for_islands_bfs))
+
+
