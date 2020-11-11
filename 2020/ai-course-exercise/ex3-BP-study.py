@@ -40,15 +40,15 @@ class LinearNN():
     y_pred = (input @ self.w_1 + self.b_1) @ self.w_2 + self.b_2
     return 1 / (1 + np.exp(-y_pred))
 
-  def backward(self, x: np.array, y: np.array) -> Tuple[np.float, GradType]:
+  def backward(self, x: np.array, y_target: np.array) -> Tuple[np.float, GradType]:
     """Backward propogation."""
     h = x @ self.w_1 + self.b_1 # shape: n * hidden_dim
     y = h @ self.w_2 + self.b_2 # shape: n * output_dim
     sig_y = 1 / (1 + np.exp(-y)) # shape: n * output_dim
 
-    loss = np.square(y - sig_y).sum() # shape: 
+    loss = np.square(y_target - sig_y).sum() # shape: 
 
-    grad_sig_y = 2 * (sig_y - y) # shape: n * out_dim
+    grad_sig_y = 2 * (sig_y - y_target) # shape: n * out_dim
     grad_y = sig_y * (1 - sig_y) * grad_sig_y # shape: n * out_dim
     grad_w_2 = h.T @ grad_y / self.batch_size # shape: hidden_units * out_dim
     grad_b_2 = np.ones(self.batch_size) @ grad_y / self.batch_size # shape: 1 * out_dim
@@ -60,9 +60,13 @@ class LinearNN():
 
   def optimize(self,grad: GradType, lr: float = 0.99): # ??
     """Optimize the parameters"""
-    for param_name, grad in zip(['w_2', 'b_2', 'w_1', 'b_1']):
+    for param_name, grad in zip(['w_2', 'b_2', 'w_1', 'b_1'], grad):
       param = getattr(self,param_name)
       setattr(self, param_name, param - lr * grad)
+
+  def __call__(self, *args):
+    """Override callable behavior."""
+    return self.forward(*args)
     
 
 class DataLoader():
@@ -77,9 +81,9 @@ class DataLoader():
       seed: random seed
     """
     self.X_train, self.y_train = self.load_data(train_path)
-    self.X_test, self.y_train = self.load_data(test_path)
+    self.X_test, self.y_test = self.load_data(test_path)
 
-  def to_one_hot(self, label: float, classes: np.array) -> list: # ??
+  def to_one_hot(self, label: float, classes: np.array) -> list:
     """Convert label to one hot vector."""
     one_hot_vector = np.zeros_like(classes)
     one_hot_vector[classes == label] = 1
@@ -91,15 +95,15 @@ class DataLoader():
     assert os.path.exists(file_path) == True, "File does not exist: {}".format(file_path)
     raw_data = np.loadtxt(file_path)
     np.random.shuffle(raw_data)
-    classes = np.unique(raw_data[:, -1]) # ??
+    classes = np.unique(raw_data[:, -1]) # find all unique classes
     one_hot_labels = np.array([self.to_one_hot(label, classes) for label in raw_data[:, -1]])
-    return raw_data[:, :raw_data.shape[1] - 1], one_hot_labels # ??
+    return raw_data[:, :raw_data.shape[1] - 1], one_hot_labels
   
   @staticmethod
   def to_abs_path(path: str) -> str: 
     """Convert path to abs path."""
     base_path = os.path.dirname(__file__)
-    return os.path.join(base_path, path) # ??
+    return os.path.join(base_path, path)
 
 class Trainer():
   """Train NN."""
@@ -115,8 +119,8 @@ class Trainer():
     """Train the train data."""
     losses = []
     with tqdm(total=self.epoch) as t:
-      for i in tqdm(range(self.epoch)):
-        lr = self.lr * np.cos(i / self.modellf.epoch * math.pi / 2)
+      for i in range(self.epoch):
+        lr = self.lr * np.cos(i / self.epoch * math.pi / 2)
         loss, grads = self.model.backward(self.data.X_train, self.data.y_train)
         self.model.optimize(grads, lr)
         t.set_description('Training {} of {}, loss: {:.4f}'.format(i, self.epoch, loss))
@@ -126,22 +130,22 @@ class Trainer():
       plt.plot(losses)
       plt.show()
 
-    def test(self) -> None: # ??
-      """Test model."""
-      y_pred = self.model(self.data.X_test)
-      y_pred = np.argmax(y_pred, axis=1)
-      y = np.argmax(self.data.y_test, axis=1)
-      acc = np.sum(y_pred == y) / self.data.y_test.shape[0]
-      print('Acc: {:.4f}'.format(acc))
+  def test(self) -> None: # ??
+    """Test model."""
+    y_pred = self.model(self.data.X_test)
+    y_pred = np.argmax(y_pred, axis=1)
+    y = np.argmax(self.data.y_test, axis=1)
+    acc = np.sum(y_pred == y) / self.data.y_test.shape[0]
+    print('Acc: {:.4f}'.format(acc))
   
-  if __name__ == "__main__":
-    train_name, test_name = './dataset/ex3-Iris-train.txt', './dataset/ex3-Iris-test.txt'
-    data = DataLoader(DataLoader.to_abs_path(train_name), DataLoader.to_abs_path(test_name)) # ??
-    model = LinearNN(data.X_train.shape[1], data.X_test.shape[1],
-      10, data.X_train.shape[0])
-      trainer = Trainer(data, model, epoch=2000, lr=0.8)
-      trainer.train(plot_loss=True)
-      train.test()
+if __name__ == "__main__":
+  train_name, test_name = './dataset/ex3-Iris-train.txt', './dataset/ex3-Iris-test.txt'
+  data = DataLoader(DataLoader.to_abs_path(train_name), DataLoader.to_abs_path(test_name)) # ??
+  model = LinearNN(data.X_train.shape[1], data.y_test.shape[1],
+    10, data.X_train.shape[0])
+  trainer = Trainer(data, model, epoch=2000, lr=0.8)
+  trainer.train(plot_loss=True)
+  trainer.test()
 
     
 
