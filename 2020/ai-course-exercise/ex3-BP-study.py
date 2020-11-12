@@ -58,10 +58,10 @@ class LinearNN():
 
     return loss, (grad_w_2, grad_b_2, grad_w_1, grad_b_1)
 
-  def optimize(self,grad: GradType, lr: float = 0.99): # ??
+  def optimize(self, grad: GradType, lr: float = 0.99): # ??
     """Optimize the parameters"""
     for param_name, grad in zip(['w_2', 'b_2', 'w_1', 'b_1'], grad):
-      param = getattr(self,param_name)
+      param = getattr(self, param_name)
       setattr(self, param_name, param - lr * grad)
 
   def __call__(self, *args):
@@ -124,13 +124,13 @@ class Trainer():
         loss, grads = self.model.backward(self.data.X_train, self.data.y_train)
         self.model.optimize(grads, lr)
         t.set_description('Training {} of {}, loss: {:.4f}'.format(i, self.epoch, loss))
-        t.update(1)
+        t.update(1) 
         losses.append(loss)
     if plot_loss:
       plt.plot(losses)
       plt.show()
 
-  def test(self) -> None: # ??
+  def test(self) -> None: 
     """Test model."""
     y_pred = self.model(self.data.X_test)
     y_pred = np.argmax(y_pred, axis=1)
