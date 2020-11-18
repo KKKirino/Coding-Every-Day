@@ -150,6 +150,6 @@ if __name__ == "__main__":
   data = DataLoader(DataLoader.to_abs_path(train_name), DataLoader.to_abs_path(test_name))
   model = LinearNeuralNetwork(data.X_train.shape[1], data.y_train.shape[1],
     10, data.X_train.shape[0])
-  trainer = Trainer(data, model, epoch=2000, lr=0.8)
+  trainer = Trainer(data, model, epoch=2000, lr=0.1)
   trainer.train(plot_loss=True)
   trainer.test()
