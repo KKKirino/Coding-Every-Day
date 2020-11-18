@@ -95,7 +95,7 @@ class DecisionTreeNode:
     """Add tab to format string."""
     return '\n'.join([('|   ' if i > 0 else '|-> ') + l for i, l in enumerate(s.split('\n'))])
 
-class DecisonTree:
+class DecisionTree:
   """Definition of decision tree."""
 
   def __init__(self, max_depth: int = 1 << 32, verbose: bool = True) -> None:
@@ -137,7 +137,7 @@ class DecisonTree:
     """Predict the classes of the given values."""
     return np.array([self.predict_one_piece(x) for x in X])
   
-  def predict_one_piece(self, row_data: np.ndarray) -> float:
+  def predict_one_piece(self, row_data: np.ndarray) -> float: # TODO
     """Predict the class of the specifed data.
     
     Args:
@@ -151,7 +151,6 @@ class DecisonTree:
       node = node.l if row_data[node.col_index] < node.split_point else node.r
     return node.label if node else -1
     
-
   @staticmethod
   def get_acc_of(y_pred: np.ndarray, y: np.ndarray) -> float:
     """Get accuracy of given y_pred and y."""
@@ -175,12 +174,12 @@ class DecisonTree:
 
 if __name__ == "__main__":
   np.random.seed(42)
-  X_train, y_train = DecisonTree.load_data('./dataset/ex4-traindata.txt')
-  X_test, y_test = DecisonTree.load_data('./dataset/ex4-testdata.txt')
-  my_tree = DecisonTree()
+  X_train, y_train = DecisionTree.load_data('./dataset/ex4-traindata.txt')
+  X_test, y_test = DecisionTree.load_data('./dataset/ex4-testdata.txt')
+  my_tree = DecisionTree()
   my_tree.fit(X_train, y_train)
   my_tree.prune(X_test, y_test)
   my_pred = my_tree.predict(X_test)
-  print('\nAcc: {:.2f}'.format(DecisonTree.get_acc_of(my_pred,y_test)))
+  print('\nAcc: {:.2f}'.format(DecisionTree.get_acc_of(my_pred,y_test)))
   print('\nMy Tree:')
   print(my_tree.tree)
