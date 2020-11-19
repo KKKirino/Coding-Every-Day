@@ -25,8 +25,8 @@ class DecisionTreeNode:
     self.depth = depth
     self.max_depth = max_depth
     self.info = self.get_info(labels)
-    self.col_index: int = -1 # TODO
-    self.split_point: float = None # TODO
+    self.col_index: int = -1 
+    self.split_point: float = None
     self.l, self.r = self.build_children()
     self.label = self.vote_class()
     
@@ -34,8 +34,8 @@ class DecisionTreeNode:
   def build_children(self) -> Tuple[DecisionTreeNode, DecisionTreeNode]:
     """Build the decision tree with ID3 algorithm."""
     if self.depth >= self.max_depth or self.if_leaf(): return None, None
-    n = self.labels.size # TODO
-    max_split_point, max_split_col, max_info_gain = float('-inf'), -1, float('-inf') # TODO
+    n = self.labels.size 
+    max_split_point, max_split_col, max_info_gain = float('-inf'), -1, float('-inf')
     for col in range(self.values.shape[1]):
       val_range = np.sort(np.unique(self.values[:, col]))
       for i in range(len(val_range) - 1):
@@ -50,7 +50,7 @@ class DecisionTreeNode:
     right_child_index = self.values[:, max_split_col] > max_split_point
     self.col_index, self.split_point = max_split_col, max_split_point
     return (DecisionTreeNode(self.values[idx], self.labels[idx], self.classes, self.depth + 1, self.max_depth) for \
-      idx in [left_child_index, right_child_index]) # TODO
+      idx in [left_child_index, right_child_index]) 
 
   def vote_class(self) -> int:
     """Vote the most possible class."""
@@ -73,13 +73,13 @@ class DecisionTreeNode:
       info: the information of the subset
     """
     n = subset_labels.size
-    return sum(-x / n * np.log2(x / n) for x in np.unique(subset_labels, return_counts=True)[1]) # TODO
+    return sum(-x / n * np.log2(x / n) for x in np.unique(subset_labels, return_counts=True)[1]) # ATTENTION
 
   def __str__(self) -> str: # TODO: all
     """Override string method."""
     if not self.l and not self.r: return 'class: {}'.format(self.label)
     l_str = 'feature_{} < {}'.format(
-      self.col_index, self. split_point) if self.l else ''
+      self.col_index, self.split_point) if self.l else ''
     l_info = self.add_tab(str(self.l))
     r_str = 'feature_{} > {}'.format(
       self.col_index, self.split_point) if self.r else ''
@@ -94,12 +94,12 @@ class DecisionTreeNode:
 class DecisionTree:
   """Definition of the progress of the decision tree."""
 
-  def __init__(self, max_depth: int = 1 << 32, verbose: bool = True) -> None: # TODO
+  def __init__(self, max_depth: int = 1 << 32, verbose: bool = True) -> None:
     """Init tree with max_depth."""
     self.tree = None
     self.max_depth = max_depth
     self.verbose = verbose
-    self.last_X, self.last_y = None, None # TODO
+    self.last_X, self.last_y = None, None # for pruning
 
   def fit(self, X: np.ndarray, y: np.ndarray) -> None:
     """Fit the decision tree."""
@@ -111,13 +111,13 @@ class DecisionTree:
   def prune(self, X: np.ndarray = None, y: np.ndarray = None) -> None:
     """Prune the decision tree."""
     if X is not None and y is not None and X.size and y.size:
-      self.last_X, self.last_y = X, y #TODO
+      self.last_X, self.last_y = X, y 
     self.do_prune(self.tree)
   
-  def do_prune(self, node: DecisionTreeNode) -> None: # TODO
+  def do_prune(self, node: DecisionTreeNode) -> None: # for recurrent call
     """Prune the tree"""
     if node is None or (node.l is None and node.r is None): return
-    self.do_prune(node.l), self.do_prune(node.r) # TODO
+    self.do_prune(node.l), self.do_prune(node.r)
     acc_before_prune = self.get_acc(self.predict(self.last_X), self.last_y)
     save_children = (node.l, node.r)
     node.l, node.r =None, None
@@ -125,13 +125,13 @@ class DecisionTree:
     if acc_after_prune < acc_before_prune:
       node.l, node.r = save_children
     elif self.verbose:
-      print('Pruned node: ' + str(save_children)) # TODO
+      print('Pruned node: ' + str(save_children)) 
 
   def predict(self, X: np.ndarray) -> np.ndarray:
     """Predict the result."""
     return np.array([self.predict_one_piece(x) for x in X])
 
-  def predict_one_piece(self, row_data: np.ndarray) -> float: # TODO: why not vote??
+  def predict_one_piece(self, row_data: np.ndarray) -> float: # the tree has already been finished. for testing
     """Predict the class of the specifed data.
     
     Args:
@@ -140,9 +140,9 @@ class DecisionTree:
     Return:
       labels: predicted label
     """
-    node = self.tree # TODO
+    node = self.tree
     while node and (node.l or node.r):
-      node = node.l if row_data[node.col_index] < node.split_point else node.r # TODO
+      node = node.l if row_data[node.col_index] < node.split_point else node.r
     return node.label if node else -1
 
   @staticmethod
@@ -174,6 +174,6 @@ if __name__ == "__main__":
     my_tree.fit(X_train, y_train)
     my_tree.prune(X_test, y_test)
     my_pred = my_tree.predict(X_test)
-    print('\nAcc: {:.2f}'.format(DecisionTree.get_acc(my_pred,y_test)))
+    print('\nAcc: {:.2f}'.format(DecisionTree.get_acc(my_pred, y_test)))
     print('\nMy Tree:')
     print(my_tree.tree)
