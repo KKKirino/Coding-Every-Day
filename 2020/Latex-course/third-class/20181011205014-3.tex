@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{cTex}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{left = 3.0cm, right = 3.0cm, top = 2.0cm, bottom = 2.0cm}
+\title{这是我的第一份\LaTeX{}论文文档}
+\author{杨睿妮(1416333092@qq.com) \\Department of Communication \\
+UESTC,\ Chengdu,\ Sichuan, 611731}
+\begin{document}
+    {
+        \maketitle
+        \begin{center}
+        \textbf{Abstract} \\
+        \end{center}
+        \qquad A user identity anonymity is an important property for roaming services. In 2011, Kang et al. proposed an improved user authentication scheme that guarantees user anonymity in wireless communications. This letter shows that Kang et al.'s improved scheme still cannot provide user anonymity as they claimed.\\
+        \indent \emph{\textbf{Keywords:} \ cryptanalysis, authentication, anonymity, wireless communications, security} \\
+        \section{Introduction}
+    }
+\section{Review of Kang et al.s Scheme}
+\subsection{Initial Phase}
+Where an \emph{MU} registers with his/her \emph{HA}, the \emph{MU}'s identity $\emph{ID}_{\emph{MU}}$ is submitted to the \emph{HA}. After receiving $\emph{ID}_{\emph{MU}}$ from \emph{MU}, \emph{HA} generates $\emph{PW}_{\emph{MU}}$, $r_1$ and $r_2$ as follows. \\
+%\begin{eqnarray}  
+\begin{align}
+    & PW_{MU} = h(N||ID_{MU}) \\
+    & r_1 = h(N||ID_{HA}) \\
+    & r_2 = h(N||ID_{MU}) \oplus {ID}_{MU}     
+\end{align}
+%\end{eqnarray}
+where N is a secret value kept by \emph{HA}.\emph{HA} stores $\emph{ID}_{\emph{HA}}$, $r_1$, $r_2$ and $\emph{h}(\cdot)$ in the smart card of \emph{MU} and then sends it with $\emph{PW}_{\emph{MU}}$ to \emph{MU} through a secure channel.
+\subsection{First Phase}
+\subsection{Second Phrase}
+\section {Conlusions}
+\end{document}

@@ -94,7 +94,7 @@ class DecisionTreeNode:
 class DecisionTree:
   """Definition of the progress of the decision tree."""
 
-  def __init__(self, max_depth: int = 1 << 32, verbose: bool = True) -> None:
+  def __init__(self, max_depth: int =10, verbose: bool = True) -> None:
     """Init tree with max_depth."""
     self.tree = None
     self.max_depth = max_depth
@@ -172,6 +172,10 @@ if __name__ == "__main__":
     X_test, y_test = DecisionTree.load_data('./dataset/ex4-testdata.txt')
     my_tree = DecisionTree()
     my_tree.fit(X_train, y_train)
+    my_pred = my_tree.predict(X_test)
+    print('\nAcc: {:.2f}'.format(DecisionTree.get_acc(my_pred, y_test)))
+    print('\nMy Tree:')  
+    print(my_tree.tree)  
     my_tree.prune(X_test, y_test)
     my_pred = my_tree.predict(X_test)
     print('\nAcc: {:.2f}'.format(DecisionTree.get_acc(my_pred, y_test)))
