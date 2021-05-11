@@ -1,0 +1,83 @@
+\documentclass{article}                 %使用article格式
+ \topmargin=0pt                          %以下页面设置，\topmargin页眉到页边的距离
+ \oddsidemargin=0pt \evensidemargin=0pt % 奇数页的左面页边距（奇数页(右页)中,正文的左端到左基准线的距离）；偶数页的左面页边距
+ \textwidth=14cm                         %宽度
+ \textheight=21cm                        %高度
+                                         %
+ \title{This is a sample of \LaTeX}      %文章题目，\latex专有 
+ \author{Bigeyes(\tt{chencs@126.net})\\ %作者. 多行用\\
+         Department of XXXX\\     %
+         UESTC, Chengdu, Sichuan, 611731      %删除下一个作者，添加}
+                                         
+ \and                                  %如有多作者, 用\and
+         A\_A                            %
+ \thanks{Supported by ...}             %致谢, 在author里
+         \\                              %
+         XXX of UESTC\\                   %
+         wwww.uestc.edu.cn}   %
+ \date{Mar. 1, 2017}                     %日期, 如果没有此项,
+                                         %则以当前日期代替, 若
+                                         %不要日期, 则用空{}
+                                         %
+ \begin{document}                        %document开始.
+                                         %以上定义标题各项内容,
+ \maketitle                              %此句产生标题, 不可缺少,
+                                         
+ \begin{abstract}                        %套用abstract格式
+ This is mini-page defined for abstract, %自动形成小页
+ you only write your abstract in it. If %
+ you want to shows keywords, maybe you   %
+ should use:                             %
+
+ {\bf Keywords: }\LaTeX, example         %LaTeX没有keywords环境
+ \end{abstract}                          
+                                         %
+ \section{The very beginning}            %一个节,
+ This is the first section of your       %
+ article. You may find every first       %一节的第一段缺省情况
+ paragraph of your section, subsection, %为段首不自动缩进
+ chapter or ... always has no            %
+ ``parindent'' at the beginning.         %
+
+ This is the second paragrph, you can    %但是以后的段段首
+ find this has parindent at the          %         自动缩进
+ beginning. If you want to show          %
+ parindent at first paragraph too,       %
+ do as the first paragraph I showed      %
+ in the next section.                    %
+                                         %
+ \section{The 2nd step}                  %第二节,使用自动标号
+ \hskip \parindent                       %横向空出\parindent
+ This is the second section. In this     % 
+ first paragraph, I use `hskip' to       % 
+ get the first parindent. Maybe you      % 
+ can get this effect by another way.     % 
+                                         %
+ \subsection{Sub-sect of 2}              %小节
+ this                                    %
+                                         %
+ \subsection*{\S 2.2 Another sub of 2}   %小节可以不使用
+ this                                    %自动标号, 这时有关
+                                         %的计数器不增加
+ \section{Conclusion}                    %
+ I think you have know \TeX well now.    %又是一节
+ I want to show you how to use           %
+ bibliography. In the article, you       %参考文献的
+ can use as ``see \cite{texbook}''.      %引用方法\cite{标识}
+                                         %
+ \begin{thebibliography}{0}              %参考文献列在这里
+                                         %{0}表示最长文献序号
+                                         %           为一位数
+                                         %\bibitem{标识}
+                                         %参考文献使用后详
+ \bibitem{texbook} Donald~E.~Knouth, ``The \TeX book'',
+ Addison-Wesley, 1984
+ \bibitem{lamport} L.\ Lamport, ``\LaTeX:
+         A Document Preparation System'',
+         Addison-Wesley, 1994
+ \bibitem{companion} M.~Goossens, F.~Millelbach,
+         and A.~Samarin, ``The \LaTeX\ Companion'',
+         Addison--Wesley, 1994
+ \end{thebibliography}
+
+ \end{document}                          %document结束

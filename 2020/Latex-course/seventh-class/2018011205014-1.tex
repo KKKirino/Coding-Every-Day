@@ -1,0 +1,48 @@
+\documentclass{beamer}
+\usepackage[UTF8]{ctex}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}  
+\usepackage{subfigure}  
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{pfnote}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{cite}
+\usetheme{Warsaw}
+\begin{document}
+\title{Sliders' title 标题}%这两个就不能加\了 
+\author{Authors 作者} 
+\date{\today}%today 前面也要补\。
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+\begin{frame}
+\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, 
+these will automatically be printed on this slide as an overview of your presentation
+\end{frame}
+\begin{frame}
+\frametitle{幻灯片测试} %\pause
+我的第一张幻灯片。
+\begin{theorem}[Mass--energy equivalence]
+$E = mc^2$
+\end{theorem}
+\begin{definition}
+definition 1...%原来这个不能加\的。。
+\end{definition}
+\end{frame}
+\begin{frame}
+ \frametitle{第二张幻灯片}
+ \pause
+ \begin{itemize}
+ \item beamer introduction pause
+ \item beamer details pause
+ \item beamer conclusions
+ \end{itemize}
+ \end{frame}
+\end{document}
