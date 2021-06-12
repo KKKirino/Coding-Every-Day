@@ -4,6 +4,8 @@
   "python.linting.flake8Enabled": false,
   "files.associations": {
     "utility": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "xiosbase": "cpp"
   }
 }
