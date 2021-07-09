@@ -9,6 +9,9 @@
     "xiosbase": "cpp",
     "xutility": "cpp",
     "cstring": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "algorithm": "cpp",
+    "xstring": "cpp",
+    "unordered_map": "cpp"
   }
 }
